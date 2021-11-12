@@ -1,0 +1,6 @@
+export const constants = {
+  SET_USER: "SET_USER",
+  INCREMENT: "INCREMENT",
+  DECREMENT: "DECREMENT",
+  SET_SOCKET: "SET_SOCKET",
+};

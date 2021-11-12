@@ -1,0 +1,27 @@
+import { CtxType } from "../../types";
+import { Ctx, Query, Resolver } from "type-graphql";
+import { UserObjectType } from "./ObjectTypes";
+import { User } from "../../entities/user/User";
+import {
+  __cookieAccessTokenName__,
+  __cookieRefreshTokenName__,
+} from "../../constants";
+
+@Resolver()
+export class UserResolver {
+  @Query(() => UserObjectType)
+  async user(@Ctx() { em, req }: CtxType): Promise<UserObjectType> {
+    if (!(req as any).uid) {
+      return {
+        user: undefined,
+        error: {
+          message: "unauthorized user",
+          field: "uid",
+        },
+      };
+    }
+    return {
+      user: (await em.findOne(User, { uid: (req as any).uid })) as any,
+    };
+  }
+}
