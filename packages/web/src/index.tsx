@@ -4,12 +4,15 @@ import "./index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { GlobalState } from "./state/GlobalState";
+import { ApolloGraphQLProvider } from "./providers/ApolloGraphQLProvider";
 
 ReactDOM.render(
   <React.StrictMode>
-    <GlobalState>
-      <App />
-    </GlobalState>
+    <ApolloGraphQLProvider>
+      <GlobalState>
+        <App />
+      </GlobalState>
+    </ApolloGraphQLProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

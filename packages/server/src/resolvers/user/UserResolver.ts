@@ -2,11 +2,6 @@ import { CtxType } from "../../types";
 import { Ctx, Query, Resolver } from "type-graphql";
 import { UserObjectType } from "./ObjectTypes";
 import { User } from "../../entities/user/User";
-import {
-  __cookieAccessTokenName__,
-  __cookieRefreshTokenName__,
-} from "../../constants";
-
 @Resolver()
 export class UserResolver {
   @Query(() => UserObjectType)

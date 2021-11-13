@@ -9,7 +9,12 @@ import {
   __cookieAccessTokenName__,
   __cookieRefreshTokenName__,
 } from "../../constants";
-import { generateAccessToken, generateRefreshToken } from "../../auth";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  storeAccessToken,
+  storeRefreshToken,
+} from "../../auth";
 
 @Resolver()
 export class UserRegisterResolver {
@@ -44,7 +49,7 @@ export class UserRegisterResolver {
     const uid: string = uuid_v4();
 
     const user = await em.create(User, {
-      username: username.trim().toLocaleLowerCase(),
+      username: username.trim().toLowerCase(),
       password: hashed,
       uid,
       gender,
@@ -68,10 +73,12 @@ export class UserRegisterResolver {
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
     // put them to the cookie
-    res.cookie(__cookieRefreshTokenName__, refreshToken);
-    res.cookie(__cookieAccessTokenName__, accessToken);
+
+    storeRefreshToken(res, refreshToken);
+    storeAccessToken(res, accessToken);
     return {
       user,
+      accessToken,
     };
   }
 }

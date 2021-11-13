@@ -12,7 +12,8 @@
     "watch": "tsc -w",
     "start": "ts-node src/server.ts",
     "dev": "nodemon src/server.ts",
-    "start:fast": "ts-node-dev --respawn src/server.ts"
+    "start:fast": "ts-node-dev --respawn src/server.ts",
+    "migration:create": "npx mikro-orm migration:create"
   },
   "dependencies": {
     "@mikro-orm/cli": "^4.5.9",

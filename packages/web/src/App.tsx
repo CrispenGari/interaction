@@ -4,6 +4,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { GlobalContext } from "./state/GlobalState";
 import { io, Socket } from "socket.io-client";
+import Routes from "./routes/Routes";
 
 // type SocketType = Socket<DefaultEventsMap, DefaultEventsMap>;
 
@@ -18,22 +19,37 @@ const App: React.FC<{}> = () => {
     };
   }, []);
 
-  console.log(socket);
+
+
+
+
+
+   const [loading, setLoading] = React.useState(true);
+  React.useEffect(() => {
+    fetch("http://localhost:3001/refresh-token", {
+      method: "POST",
+      credentials: "include",
+    })
+      .then(async (res) => {
+        const { accessToken } = await res.json();
+        // setAccessToken(accessToken);
+        console.log(accessToken)
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return (
+      <div>
+        <p>loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="app">
-      <Header />
-      <div className="app__main">
-        <h1>
-          Welcome to the <span>React</span>, <span>TypeScript</span>,{" "}
-          <span>Sass</span>
-          <span>Scss</span> and <span>Css</span>boiler plate.
-        </h1>
-        <p>
-          Open <span>App.tsx</span> and start writing some code
-        </p>
-      </div>
-      <Footer />
+      <Routes />
     </div>
   );
 };

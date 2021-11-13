@@ -13,7 +13,7 @@ export class User {
   @Property({ type: "text", nullable: false })
   password!: string;
 
-  @Property({ type: "int", default: 0, nullable: false })
+  @Property({ columnType: "int", default: 0, nullable: false })
   tokenVersion: number;
 
   @Field(() => String)

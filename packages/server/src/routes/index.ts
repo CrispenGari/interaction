@@ -1,12 +1,69 @@
 import { Request, Response, Router } from "express";
-
+import { __cookieRefreshTokenName__ } from "../constants";
+import { verify } from "jsonwebtoken";
+import {
+  storeRefreshToken,
+  generateAccessToken,
+  generateRefreshToken,
+} from "../auth";
+import { MikroORM } from "@mikro-orm/core";
+import mikroOrmConfig from "../mikro-orm.config";
+import { User } from "../entities/user/User";
 const router: Router = Router();
 
-router.get("/", (_req: Request, res: Response) => {
-  res.status(200).json({
-    name: "backend",
-    language: "typescript",
-    message: "hello world!",
+router.post("/refresh-token", async (req: Request, res: Response) => {
+  const { em } = await MikroORM.init(mikroOrmConfig);
+  const token = req.cookies[__cookieRefreshTokenName__];
+  if (!token) {
+    return res.status(401).send({
+      code: 401,
+      message: "UnAuthorized",
+      ok: false,
+      accessToken: "",
+    });
+  }
+  let payload: any = null;
+  try {
+    let tokenToVerify: string =
+      String(token).split(" ").length > 1 ? token.split(" ")[1] : token;
+    payload = verify(tokenToVerify, process.env.REFRESH_TOKEN_SECRETE!);
+  } catch (error) {
+    console.error(error);
+    return res.status(403).send({
+      code: 403,
+      message: "Forbidden",
+      ok: false,
+      accessToken: "",
+    });
+  }
+
+  const user = await em.findOne(User, {
+    uid: payload.uid,
+  });
+
+  if (!user) {
+    return res.status(403).send({
+      code: 403,
+      message: "Forbidden",
+      ok: false,
+      accessToken: "",
+    });
+  }
+
+  if (user.tokenVersion !== payload.tokenVersion) {
+    return res.status(403).send({
+      code: 403,
+      message: "Forbidden",
+      ok: false,
+      accessToken: "",
+    });
+  }
+  storeRefreshToken(res, generateRefreshToken(user));
+  return res.status(200).send({
+    code: 200,
+    message: "ok",
+    ok: true,
+    accessToken: generateAccessToken(user),
   });
 });
 

@@ -13,6 +13,8 @@ import redis from "redis";
 import session from "express-session";
 import connectRedis from "connect-redis";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
+import router from "./routes";
+import cookieParser from "cookie-parser";
 
 (async () => {
   const orm = await MikroORM.init(mikroOrmConfig);
@@ -21,7 +23,7 @@ import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-co
   const app: Application = express();
   const RedisStore = connectRedis(session);
   const redisClient = redis.createClient();
-
+  app.use(cookieParser());
   app.use(
     cors({
       credentials: true,
@@ -44,6 +46,7 @@ import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-co
       },
     })
   );
+  app.use(router);
 
   const server: S = createServer(app);
   const io = new Server(server, {

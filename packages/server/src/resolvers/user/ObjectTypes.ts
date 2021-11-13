@@ -14,6 +14,9 @@ export class UserObjectType {
   @Field(() => User, { nullable: true })
   user?: User;
 
+  @Field(() => String, { nullable: true })
+  accessToken?: string;
+
   @Field(() => Error, { nullable: true })
   error?: Error;
 }

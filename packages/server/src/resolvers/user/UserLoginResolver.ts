@@ -5,10 +5,11 @@ import { UserObjectType } from "./ObjectTypes";
 import { compare } from "bcryptjs";
 import { User } from "../../entities/user/User";
 import {
-  __cookieAccessTokenName__,
-  __cookieRefreshTokenName__,
-} from "../../constants";
-import { generateAccessToken, generateRefreshToken } from "../../auth";
+  generateAccessToken,
+  generateRefreshToken,
+  storeAccessToken,
+  storeRefreshToken,
+} from "../../auth";
 
 @Resolver()
 export class UserLoginResolver {
@@ -40,14 +41,16 @@ export class UserLoginResolver {
         },
       };
     }
-    // jwt tokens magic goes here
+
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
     // put them to the cookie
-    res.cookie(__cookieRefreshTokenName__, refreshToken);
-    res.cookie(__cookieAccessTokenName__, accessToken);
+
+    storeRefreshToken(res, refreshToken);
+    storeAccessToken(res, accessToken);
     return {
       user,
+      accessToken,
     };
   }
 }
