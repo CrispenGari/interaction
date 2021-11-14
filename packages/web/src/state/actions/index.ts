@@ -17,11 +17,18 @@ const setUser = (payload: any) => {
     type: constants.INCREMENT,
   };
 };
+const setSocket = (payload: any) => {
+  return {
+    payload,
+    type: constants.SET_SOCKET,
+  };
+};
 
 const actions = {
   setUser,
   decrementCounter,
   incrementCounter,
+  setSocket,
 };
 
 export default actions;

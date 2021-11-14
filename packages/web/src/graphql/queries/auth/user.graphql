@@ -1,0 +1,14 @@
+query User {
+  user {
+    user {
+      username
+      gender
+      uid
+    }
+    accessToken
+    error {
+      field
+      message
+    }
+  }
+}

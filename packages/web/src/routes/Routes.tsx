@@ -6,15 +6,9 @@ const R: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/register">
-          <Register />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
+        <Route path="/login" caseSensitive={false} element={<Login />} />
+        <Route path="/register" caseSensitive={false} element={<Register />} />
+        <Route path="/" caseSensitive={false} element={<Home />} />
       </Routes>
     </Router>
   );

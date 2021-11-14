@@ -5,7 +5,8 @@ import Header from "./components/Header";
 import { GlobalContext } from "./state/GlobalState";
 import { io, Socket } from "socket.io-client";
 import Routes from "./routes/Routes";
-
+import { setAccessToken } from "./state";
+import actions from "./state/actions";
 // type SocketType = Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const App: React.FC<{}> = () => {
@@ -13,18 +14,13 @@ const App: React.FC<{}> = () => {
   // const [socket, setSocket] = React.useState<SocketType>();
   React.useEffect(() => {
     const client = io("http://localhost:3001/");
-    socketDispatch();
+    socketDispatch(actions.setSocket(socket));
     return () => {
       client.close();
     };
   }, []);
 
-
-
-
-
-
-   const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(true);
   React.useEffect(() => {
     fetch("http://localhost:3001/refresh-token", {
       method: "POST",
@@ -32,8 +28,7 @@ const App: React.FC<{}> = () => {
     })
       .then(async (res) => {
         const { accessToken } = await res.json();
-        // setAccessToken(accessToken);
-        console.log(accessToken)
+        setAccessToken(accessToken);
       })
       .catch((error) => console.log(error))
       .finally(() => setLoading(false));

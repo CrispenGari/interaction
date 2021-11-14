@@ -1,12 +1,52 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  useRegisterMutation,
+  UserDocument,
+  UserQuery,
+  useUserQuery,
+} from "../../../generated/graphql";
 const Register: React.FC = () => {
   const [gender, setGender] = React.useState<string>("male");
   const [username, setUsername] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
+  const navigate = useNavigate();
+  const [registerHandler] = useRegisterMutation({
+    fetchPolicy: "network-only",
+  });
+  const { data } = useUserQuery({ fetchPolicy: "network-only" });
 
-  const register = (e: React.FormEvent<HTMLFormElement>) => {
+  React.useEffect(() => {
+    let mounted: boolean = true;
+    if (mounted && (data as any)?.user?.user) {
+      navigate("/");
+    }
+    return () => {
+      mounted = false;
+    };
+  }, [data]);
+
+  const register = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    await registerHandler({
+      variables: {
+        input: {
+          gender,
+          password,
+          username,
+        },
+      },
+      update: async (cache, { data }) => {
+        if (!data) return null;
+        await cache.writeQuery<UserQuery>({
+          query: UserDocument,
+          data: {
+            user: data.register.user as any,
+          },
+        });
+      },
+    });
+    await navigate("/");
   };
   return (
     <div className="register">
