@@ -28,7 +28,6 @@ router.post("/refresh-token", async (req: Request, res: Response) => {
       String(token).split(" ").length > 1 ? token.split(" ")[1] : token;
     payload = verify(tokenToVerify, process.env.REFRESH_TOKEN_SECRETE!);
   } catch (error) {
-    console.error(error);
     return res.status(403).send({
       code: 403,
       message: "Forbidden",
@@ -41,6 +40,8 @@ router.post("/refresh-token", async (req: Request, res: Response) => {
     uid: payload.uid,
   });
 
+  console.log("user from routes index.ts", user);
+
   if (!user) {
     return res.status(403).send({
       code: 403,
@@ -50,7 +51,8 @@ router.post("/refresh-token", async (req: Request, res: Response) => {
     });
   }
 
-  if (user.tokenVersion !== payload.tokenVersion) {
+  console.log("payload from routes index.ts", payload);
+  if (user.tokenVersion !== payload.version) {
     return res.status(403).send({
       code: 403,
       message: "Forbidden",

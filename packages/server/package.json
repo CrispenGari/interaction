@@ -24,6 +24,7 @@
     "apollo-server-express": "^3.5.0",
     "argon2": "^0.28.2",
     "bcryptjs": "^2.4.3",
+    "class-validator": "^0.13.1",
     "connect-redis": "^6.0.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",

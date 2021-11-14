@@ -1,5 +1,5 @@
 import { CtxType } from "../../types";
-import { Arg, Ctx, Mutation, Resolver, Query } from "type-graphql";
+import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
 import { UserRegisterInput } from "./InputTypes";
 import { UserObjectType } from "./ObjectTypes";
 import { v4 as uuid_v4 } from "uuid";
@@ -18,11 +18,6 @@ import {
 
 @Resolver()
 export class UserRegisterResolver {
-  @Query(() => String)
-  async hello() {
-    return "hello world";
-  }
-
   @Mutation(() => UserObjectType)
   async register(
     @Arg("input", () => UserRegisterInput, { nullable: false })

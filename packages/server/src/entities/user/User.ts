@@ -1,12 +1,14 @@
-import { Entity, PrimaryKey, Property } from "@mikro-orm/core";
+import { Entity, OneToMany, PrimaryKey, Property } from "@mikro-orm/core";
 import { ObjectType, Field } from "type-graphql";
+import { PrivateChat } from "../private/PrivateChat";
+import { SharedFields } from "../shared/Shared";
 
 @ObjectType()
 @Entity({
   tableName: "users",
   comment: "the table that contain users of the application",
 })
-export class User {
+export class User extends SharedFields {
   @PrimaryKey()
   id: number;
 
@@ -28,11 +30,7 @@ export class User {
   @Property({ unique: true, nullable: false, type: "text" })
   uid!: string;
 
-  @Field(() => String)
-  @Property({ type: "date" })
-  createdAt = new Date();
-
-  @Field(() => String)
-  @Property({ type: "date" })
-  updatedAt = new Date();
+  @Field(() => [PrivateChat])
+  @OneToMany(() => PrivateChat, (p_chat) => p_chat.user)
+  chats!: PrivateChat[];
 }

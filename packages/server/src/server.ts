@@ -15,6 +15,7 @@ import connectRedis from "connect-redis";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import router from "./routes";
 import cookieParser from "cookie-parser";
+import { authenticationMiddlewareFn } from "./middlewares";
 
 (async () => {
   const orm = await MikroORM.init(mikroOrmConfig);
@@ -46,6 +47,7 @@ import cookieParser from "cookie-parser";
       },
     })
   );
+  app.use(authenticationMiddlewareFn);
   app.use(router);
 
   const server: S = createServer(app);

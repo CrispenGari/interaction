@@ -13,10 +13,12 @@ export class UserResolver {
           message: "unauthorized user",
           field: "uid",
         },
+        accessToken: "",
       };
     }
     return {
       user: (await em.findOne(User, { uid: (req as any).uid })) as any,
+      accessToken: "hidden-when-user-is-authenticated",
     };
   }
 }
