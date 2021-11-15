@@ -6,6 +6,6 @@ import { CtxType } from "src/types";
 export class UsersResolver {
   @Query(() => [User], { nullable: false })
   async users(@Ctx() { em }: CtxType): Promise<User[]> {
-    return await em.find(User, {});
+    return await em.find(User, {}, ["chats"]);
   }
 }

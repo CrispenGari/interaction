@@ -1,7 +1,7 @@
 import { Field, InputType } from "type-graphql";
 
 @InputType()
-export class CreateContactInputType {
+export class CreateChatInputType {
   @Field(() => String, { nullable: false })
   uid: string;
 

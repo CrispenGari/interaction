@@ -1,4 +1,4 @@
-import { Entity, OneToMany, PrimaryKey, Property } from "@mikro-orm/core";
+import { Entity, ManyToMany, PrimaryKey, Property } from "@mikro-orm/core";
 import { ObjectType, Field } from "type-graphql";
 import { PrivateChat } from "../private/PrivateChat";
 import { SharedFields } from "../shared/Shared";
@@ -30,7 +30,7 @@ export class User extends SharedFields {
   @Property({ unique: true, nullable: false, type: "text" })
   uid!: string;
 
-  @Field(() => [PrivateChat])
-  @OneToMany(() => PrivateChat, (p_chat) => p_chat.user)
+  @Field(() => [PrivateChat], { nullable: true })
+  @ManyToMany(() => PrivateChat, (chat) => chat.users)
   chats!: PrivateChat[];
 }

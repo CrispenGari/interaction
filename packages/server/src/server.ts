@@ -17,9 +17,17 @@ import router from "./routes";
 import cookieParser from "cookie-parser";
 import { authenticationMiddlewareFn } from "./middlewares";
 
+interface DataType {
+  chaId: string;
+  userId: string;
+  username: string;
+  private: boolean;
+}
+
 (async () => {
   const orm = await MikroORM.init(mikroOrmConfig);
   await orm.getMigrator().up();
+  const { em } = orm;
 
   const app: Application = express();
   const RedisStore = connectRedis(session);
@@ -59,13 +67,29 @@ import { authenticationMiddlewareFn } from "./middlewares";
   });
   io.on("connection", (socket: Socket) => {
     console.log("new connection", socket.id);
+
+    /*
+      when the user is connected keep the socket connection open (take variables from the handshake)
+      1. listen for events and broadcast/emit events
+    */
+    socket.on("join-room", (_data: DataType) => {
+      //  determine if public or private chat
+
+      socket.join(_data.chaId); // join them to the same chat
+
+      socket.broadcast.to(_data.chaId).emit("user-back-in-the-chat");
+    });
+
+    socket.on("disconnect", () => {
+      console.log("user disconnected", socket.id);
+    });
   });
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       validate: false,
       resolvers,
     }),
-    context: ({ req, res }) => ({ em: orm.em, req, res, io }),
+    context: ({ req, res }) => ({ em, req, res, io }),
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground({})],
   });
   await apolloServer.start();

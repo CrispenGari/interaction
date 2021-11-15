@@ -6,8 +6,8 @@ import { SharedFields } from "../shared/Shared";
 @ObjectType()
 @Entity({ tableName: "messages" })
 export class Message extends SharedFields {
-  @PrimaryKey({ type: "uuid", defaultRaw: "uuid_generate_v4()" })
-  id: string;
+  @PrimaryKey()
+  id: number;
 
   @Field(() => String, { nullable: false })
   @Property({ nullable: false, type: "text" })
@@ -17,6 +17,6 @@ export class Message extends SharedFields {
   @Property({ nullable: false, type: "text" })
   senderId: string;
 
-  @ManyToOne(() => PrivateChat, { mapToPk: true })
+  @ManyToOne(() => PrivateChat)
   private_chat!: PrivateChat;
 }

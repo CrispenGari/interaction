@@ -1,5 +1,7 @@
 import { NonEmptyArray } from "type-graphql";
-import { CreateContactResolver } from "./private/CreateContactResolver";
+import { ChatMessagesResolver } from "./private/ChatMessagesResolver";
+import { CreateChatResolver } from "./private/CreateChatResolver";
+import { SendMessageResolver } from "./private/SendMessageResolver";
 import { UserLoginResolver } from "./user/UserLoginResolver";
 import { UserLogoutResolver } from "./user/UserLogoutResolver";
 import { UserRegisterResolver } from "./user/UserRegisterResolver";
@@ -13,6 +15,8 @@ export const resolvers: NonEmptyArray<Function> | NonEmptyArray<string> = [
   UserLoginResolver,
   UserLogoutResolver,
   UserInvalidateTokenResolver,
-  CreateContactResolver,
+  CreateChatResolver,
   UsersResolver,
+  ChatMessagesResolver,
+  SendMessageResolver,
 ];

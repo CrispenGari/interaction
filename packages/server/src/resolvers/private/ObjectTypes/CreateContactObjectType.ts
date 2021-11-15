@@ -11,10 +11,10 @@ class CreateContactError {
 }
 
 @ObjectType()
-export class CreateContactObjectType {
+export class CreateChatObjectType {
   @Field(() => PrivateChat, { nullable: true })
   chat?: PrivateChat;
 
-  @Field(() => CreateContactError)
+  @Field(() => CreateContactError, { nullable: true })
   error?: CreateContactError;
 }
