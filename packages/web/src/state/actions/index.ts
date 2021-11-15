@@ -14,7 +14,7 @@ const decrementCounter = (payload: number) => {
 const setUser = (payload: any) => {
   return {
     payload,
-    type: constants.INCREMENT,
+    type: constants.SET_USER,
   };
 };
 const setSocket = (payload: any) => {

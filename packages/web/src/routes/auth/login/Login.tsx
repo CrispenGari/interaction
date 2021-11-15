@@ -22,7 +22,7 @@ const Login: React.FC = () => {
     return () => {
       mounted = false;
     };
-  }, [data]);
+  }, [data, navigate]);
 
   const login = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

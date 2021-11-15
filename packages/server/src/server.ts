@@ -17,11 +17,15 @@ import router from "./routes";
 import cookieParser from "cookie-parser";
 import { authenticationMiddlewareFn } from "./middlewares";
 
-interface DataType {
-  chaId: string;
-  userId: string;
+interface User {
+  __typename: string;
   username: string;
-  private: boolean;
+  gender: string;
+  uid: string;
+}
+interface DataType {
+  chatId: string;
+  user: User;
 }
 
 (async () => {
@@ -74,10 +78,11 @@ interface DataType {
     */
     socket.on("join-room", (_data: DataType) => {
       //  determine if public or private chat
-
-      socket.join(_data.chaId); // join them to the same chat
-
-      socket.broadcast.to(_data.chaId).emit("user-back-in-the-chat");
+      console.log(_data);
+      socket.join(_data.chatId); // join them to the same chat
+      // socket.on(`messages-${_data.chaId}`, ())
+      socket.to(_data.chatId).emit(`new-message-${_data.chatId}`, _data);
+      socket.broadcast.to(_data.chatId).emit("user-back-in-the-chat");
     });
 
     socket.on("disconnect", () => {

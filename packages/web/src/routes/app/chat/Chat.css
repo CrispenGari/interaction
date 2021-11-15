@@ -1,0 +1,30 @@
+.chat {
+  width: 100%;
+}
+.chat__container {
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: space-between;
+  max-width: 1000px;
+  margin: 0px auto;
+}
+.chat__container::-webkit-scrollbar {
+  display: none;
+}
+.chat__left {
+  flex: 0.2;
+  overflow: auto;
+}
+.chat__right {
+  flex: 0.2;
+  overflow: auto;
+}
+.chat__center {
+  flex: 0.6;
+  margin: 0px 5px;
+  background: white;
+  overflow: auto;
+}

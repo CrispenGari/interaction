@@ -1,4 +1,3 @@
-import { onError } from "apollo-link-error";
 import React from "react";
 import {
   ApolloProvider,

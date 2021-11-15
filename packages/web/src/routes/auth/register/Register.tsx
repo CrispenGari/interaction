@@ -24,7 +24,7 @@ const Register: React.FC = () => {
     return () => {
       mounted = false;
     };
-  }, [data]);
+  }, [data, navigate]);
 
   const register = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -1,21 +1,23 @@
 import React from "react";
 import "./App.scss";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
 import { GlobalContext } from "./state/GlobalState";
-import { io, Socket } from "socket.io-client";
+import { io } from "socket.io-client";
 import Routes from "./routes/Routes";
 import { setAccessToken } from "./state";
 import actions from "./state/actions";
 // type SocketType = Socket<DefaultEventsMap, DefaultEventsMap>;
 
 const App: React.FC<{}> = () => {
-  const { socket, socketDispatch } = React.useContext(GlobalContext);
+  const { socketDispatch } = React.useContext(GlobalContext);
   // const [socket, setSocket] = React.useState<SocketType>();
   React.useEffect(() => {
+    let mounted: boolean = true;
     const client = io("http://localhost:3001/");
-    socketDispatch(actions.setSocket(socket));
+    if (client && mounted) {
+      socketDispatch(actions.setSocket(client));
+    }
     return () => {
+      mounted = false;
       client.close();
     };
   }, []);
