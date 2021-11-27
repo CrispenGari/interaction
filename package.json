@@ -1,9 +1,0 @@
-{
-  "name": "interaction",
-  "private": true,
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
-  }
-}

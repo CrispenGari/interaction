@@ -8,7 +8,7 @@ This is a simple full stack chat application that allows user to chat publicly a
 
 ### Techs
 
-This application will use the `monorepo` yarn spaces approach using `lerna` to share code among packages `server` and `client`.
+This will be an application that contains two packages the `server` and the `web`. The server will act as our backend and the `web` will be a client web application created using react `cra`.
 
 ### 1. server
 
