@@ -16,6 +16,10 @@ import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-co
 import router from "./routes";
 import cookieParser from "cookie-parser";
 import { authenticationMiddlewareFn } from "./middlewares";
+import {
+  _send_message_and_get_response,
+  _get_messages_for_a_chat,
+} from "./utils";
 
 interface User {
   __typename: string;
@@ -26,6 +30,7 @@ interface User {
 interface DataType {
   chatId: string;
   user: User;
+  message: string;
 }
 
 (async () => {
@@ -76,13 +81,35 @@ interface DataType {
       when the user is connected keep the socket connection open (take variables from the handshake)
       1. listen for events and broadcast/emit events
     */
-    socket.on("join-room", (_data: DataType) => {
+
+    socket.on("join-room", async (roomId: string) => {
       //  determine if public or private chat
-      console.log(_data);
-      socket.join(_data.chatId); // join them to the same chat
-      // socket.on(`messages-${_data.chaId}`, ())
-      socket.to(_data.chatId).emit(`new-message-${_data.chatId}`, _data);
-      socket.broadcast.to(_data.chatId).emit("user-back-in-the-chat");
+      socket.join(roomId); // join them to the same chat
+      const rooms: string[] = [...socket.rooms];
+      // emit the messages that are in this private chat
+
+      const _prevMessages = await _get_messages_for_a_chat(em, roomId);
+      if (typeof _prevMessages !== "undefined") {
+        await io.in(roomId).emit("receive-new-message", _prevMessages);
+      }
+      // socket.to(roomId).emit("user-joined", );
+      socket.on("send-new-message", async (_data: DataType) => {
+        const _room: string =
+          rooms.find((room: string) => room === _data.chatId) || "";
+        const data: any = await _send_message_and_get_response(
+          em,
+          _room,
+          _data.user.uid,
+          _data.message
+        );
+
+        if (typeof data !== "undefined") {
+          await io.in(_room).emit("receive-new-message", data);
+        }
+      });
+      // // socket.on(`messages-${_data.chaId}`, ())
+      // socket.to(_data.chatId).emit(`new-message-${_data.chatId}`, _data);
+      //
     });
 
     socket.on("disconnect", () => {

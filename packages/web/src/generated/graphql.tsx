@@ -14,18 +14,57 @@ export type Scalars = {
   Float: number;
 };
 
+export type ChatMessagesObjectType = {
+  __typename?: 'ChatMessagesObjectType';
+  chat?: Maybe<PrivateChat>;
+  n_messages?: Maybe<Scalars['Int']>;
+  n_participants?: Maybe<Scalars['Int']>;
+};
+
+export type CreateChatInputType = {
+  friendId: Scalars['String'];
+  uid: Scalars['String'];
+};
+
+export type CreateChatObjectType = {
+  __typename?: 'CreateChatObjectType';
+  chat?: Maybe<PrivateChat>;
+  error?: Maybe<CreateContactError>;
+};
+
+export type CreateContactError = {
+  __typename?: 'CreateContactError';
+  field: Scalars['String'];
+  message: Scalars['String'];
+};
+
 export type Error = {
   __typename?: 'Error';
   field: Scalars['String'];
   message: Scalars['String'];
 };
 
+export type Message = {
+  __typename?: 'Message';
+  createdAt: Scalars['String'];
+  senderId: Scalars['String'];
+  text: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  createChat: CreateChatObjectType;
   invalidateToken: Scalars['Boolean'];
   login: UserObjectType;
   logout: Scalars['Boolean'];
   register: UserObjectType;
+  sendMessage: SendMessageObjectType;
+};
+
+
+export type MutationCreateChatArgs = {
+  input: CreateChatInputType;
 };
 
 
@@ -38,13 +77,48 @@ export type MutationRegisterArgs = {
   input: UserRegisterInput;
 };
 
+
+export type MutationSendMessageArgs = {
+  input: SendMessageInputType;
+};
+
+export type PrivateChat = {
+  __typename?: 'PrivateChat';
+  chatId: Scalars['String'];
+  createdAt: Scalars['String'];
+  messages: Array<Message>;
+  updatedAt: Scalars['String'];
+  users: Array<User>;
+};
+
 export type Query = {
   __typename?: 'Query';
+  getChat: ChatMessagesObjectType;
   user: UserObjectType;
+  users: Array<User>;
+};
+
+
+export type QueryGetChatArgs = {
+  chatId: Scalars['String'];
+};
+
+export type SendMessageInputType = {
+  chatId: Scalars['String'];
+  message: Scalars['String'];
+  senderId: Scalars['String'];
+};
+
+export type SendMessageObjectType = {
+  __typename?: 'SendMessageObjectType';
+  message?: Maybe<Message>;
+  reason_or_message: Scalars['String'];
+  sent?: Maybe<Scalars['Boolean']>;
 };
 
 export type User = {
   __typename?: 'User';
+  chats?: Maybe<Array<PrivateChat>>;
   createdAt: Scalars['String'];
   gender: Scalars['String'];
   uid: Scalars['String'];
@@ -88,6 +162,16 @@ export type RegisterMutationVariables = Exact<{
 
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserObjectType', accessToken?: string | null | undefined, user?: { __typename?: 'User', username: string, gender: string, uid: string } | null | undefined, error?: { __typename?: 'Error', message: string, field: string } | null | undefined } };
+
+export type AppUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AppUserQuery = { __typename?: 'Query', user: { __typename?: 'UserObjectType', user?: { __typename?: 'User', username: string, gender: string, uid: string, chats?: Array<{ __typename?: 'PrivateChat', chatId: string }> | null | undefined } | null | undefined } };
+
+export type AllUsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllUsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', username: string, gender: string, createdAt: string }> };
 
 export type UserQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -209,6 +293,83 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const AppUserDocument = gql`
+    query AppUser {
+  user {
+    user {
+      username
+      gender
+      uid
+      chats {
+        chatId
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useAppUserQuery__
+ *
+ * To run a query within a React component, call `useAppUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAppUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAppUserQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAppUserQuery(baseOptions?: Apollo.QueryHookOptions<AppUserQuery, AppUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AppUserQuery, AppUserQueryVariables>(AppUserDocument, options);
+      }
+export function useAppUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AppUserQuery, AppUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AppUserQuery, AppUserQueryVariables>(AppUserDocument, options);
+        }
+export type AppUserQueryHookResult = ReturnType<typeof useAppUserQuery>;
+export type AppUserLazyQueryHookResult = ReturnType<typeof useAppUserLazyQuery>;
+export type AppUserQueryResult = Apollo.QueryResult<AppUserQuery, AppUserQueryVariables>;
+export const AllUsersDocument = gql`
+    query AllUsers {
+  users {
+    username
+    gender
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useAllUsersQuery__
+ *
+ * To run a query within a React component, call `useAllUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllUsersQuery(baseOptions?: Apollo.QueryHookOptions<AllUsersQuery, AllUsersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AllUsersQuery, AllUsersQueryVariables>(AllUsersDocument, options);
+      }
+export function useAllUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllUsersQuery, AllUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AllUsersQuery, AllUsersQueryVariables>(AllUsersDocument, options);
+        }
+export type AllUsersQueryHookResult = ReturnType<typeof useAllUsersQuery>;
+export type AllUsersLazyQueryHookResult = ReturnType<typeof useAllUsersLazyQuery>;
+export type AllUsersQueryResult = Apollo.QueryResult<AllUsersQuery, AllUsersQueryVariables>;
 export const UserDocument = gql`
     query User {
   user {

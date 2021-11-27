@@ -1,5 +1,8 @@
 .chat {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 .chat__container {
   width: 100vw;
@@ -27,4 +30,9 @@
   margin: 0px 5px;
   background: white;
   overflow: auto;
+}
+.chat__messages__container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
 }
