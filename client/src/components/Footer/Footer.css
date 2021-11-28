@@ -1,0 +1,16 @@
+.footer {
+  width: 100%;
+  background-color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid cornflowerblue;
+}
+
+.footer > h1 {
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  color: cornflowerblue;
+}

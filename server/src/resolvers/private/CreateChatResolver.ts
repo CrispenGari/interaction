@@ -17,7 +17,7 @@ export class CreateChatResolver {
     });
 
     const chatId: string = [uid.trim(), friendId.trim()]
-      .sort((a: any, b: any) => a - b)
+      .sort((a: string, b: string) => a.localeCompare(b))
       .join("-");
 
     if (!user_1) {
@@ -42,9 +42,8 @@ export class CreateChatResolver {
     }
     const chat = await em.create(PrivateChat, {
       chatId,
+      users: [user_1, user_2],
     });
-    chat.users.push(user_1);
-    chat.users.push(user_2);
     try {
       await em.persistAndFlush(chat);
       return {

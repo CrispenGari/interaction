@@ -46,6 +46,4 @@ We are going to use react icons for the application icons in the frontend.
 
 [group_chat]                              [private_chat]
 
-
-
 ```

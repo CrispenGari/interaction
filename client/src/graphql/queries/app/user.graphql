@@ -1,0 +1,17 @@
+query AppUser {
+  user {
+    user {
+      username
+      gender
+      uid
+      chats {
+        chatId
+        updatedAt
+        users {
+          username
+          uid
+        }
+      }
+    }
+  }
+}

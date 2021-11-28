@@ -1,0 +1,20 @@
+.header {
+  width: 100%;
+  background-color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid cornflowerblue;
+}
+.header > h1 {
+  font-weight: 500;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  color: cornflowerblue;
+  align-items: center;
+}
+.header > h1:last-of-type {
+  color: gray;
+}

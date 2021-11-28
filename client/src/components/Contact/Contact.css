@@ -1,0 +1,44 @@
+.contact {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: all 500ms ease;
+  border-bottom: 0.5px solid lightgray;
+}
+.contact__avatar {
+  width: 40px;
+  height: 40px;
+  background-color: gray;
+  margin-right: 10px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 1.5rem;
+}
+.contact__right {
+  flex: 1;
+}
+.contact__right > h1 {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.contact__right > p {
+  color: gray;
+  font-size: 0.7rem;
+}
+
+.contact:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+.contact:hover {
+  cursor: pointer;
+  background-color: cornflowerblue;
+  opacity: 0.6;
+}
+.contact:hover > .contact__right > h1 {
+  color: white;
+}
