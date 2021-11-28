@@ -1,11 +1,7 @@
 import React from "react";
 import "./ProfileCard.css";
 import { useNavigate } from "react-router-dom";
-import {
-  useLogoutMutation,
-  UserDocument,
-  UserQuery,
-} from "../../generated/graphql";
+import { useLogoutMutation } from "../../generated/graphql";
 
 interface Props {
   user: any;
@@ -14,16 +10,8 @@ const ProfileCard: React.FC<Props> = ({ user }) => {
   const navigate = useNavigate();
   const [logoutHandler] = useLogoutMutation({ fetchPolicy: "network-only" });
   const logout = async () => {
-    await logoutHandler({
-      update: async (cache, { data }) => {
-        if (!data) return null;
-        await cache.writeQuery<UserQuery>({
-          query: UserDocument,
-          data: data.logout as any,
-        });
-      },
-    });
-    await navigate("/");
+    await logoutHandler();
+    await navigate("/login");
   };
   return (
     <div className="profile__card">

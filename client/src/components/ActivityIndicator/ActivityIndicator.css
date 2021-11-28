@@ -1,0 +1,17 @@
+.activity__indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid black;
+  animation: identifier 1s ease infinite forwards;
+  border-left: 3px solid cornflowerblue;
+}
+
+@keyframes identifier {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

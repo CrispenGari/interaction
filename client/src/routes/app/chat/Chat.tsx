@@ -10,7 +10,7 @@ import { Header, ProfileCard } from "../../../components";
 import { useAppUserQuery } from "../../../generated/graphql";
 const Chat: React.FC = () => {
   const { socket, user } = React.useContext(GlobalContext);
-  const { data: appUser, loading: appUserLoading } = useAppUserQuery({
+  const { data: appUser } = useAppUserQuery({
     fetchPolicy: "network-only",
   });
   const params = useParams();
@@ -34,9 +34,10 @@ const Chat: React.FC = () => {
       message: msg,
       chatId: params.chatId,
     });
-    window.document.querySelector("p#chat__bottom")?.scrollIntoView({
+    window?.document?.querySelector("p#chat__bottom")?.scrollIntoView({
       behavior: "smooth",
     });
+    setMsg("");
   };
   io.on("receive-new-message", (data) => {
     setMessages(data);
@@ -50,7 +51,7 @@ const Chat: React.FC = () => {
           <div className="chat__center__header">
             <h1>private chat</h1>
             <p>{`you & ${
-              messages?.users?.find((u: any) => u.uid != user?.uid)?.username
+              messages?.users?.find((u: any) => u.uid !== user?.uid)?.username
             }`}</p>
           </div>
 

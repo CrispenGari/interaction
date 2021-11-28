@@ -16,7 +16,7 @@ The server will be running as an express application that will be serve a graphq
 
 ### 2. web
 
-The web application is using `react.js` with `typescript` as a programming language and `css`, `scss` and `sass` for styling components.
+The web application is using `react.js` with `typescript` as a programming language and `css` for styling components.
 
 ### authentication
 
@@ -34,16 +34,4 @@ We are going to use react icons for the application icons in the frontend.
 
 ### project description
 
-1. when the user is authenticated he/she will be able to create groups/rooms where people can join and chat publicly.
-2. the authenticated user has access to all the user in the application, he/she can make private chats with specific user/users
-3. no need to follow each other, but the user has rights to block other users.
-4. in a group chat only group admins will able to block the user from participating in the group.
-
-```
-                      [User]
-                        |
-    |                                           | (many to one)
-
-[group_chat]                              [private_chat]
-
-```
+1. authenticated user has access to all the user in the application, he/she can make private chats with specific user/users

@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import AuthCard from "../../../components/AuthCard";
 import "./Home.css";
 import {
@@ -15,11 +14,11 @@ const Home: React.FC = () => {
   const { userDispatch } = React.useContext(GlobalContext);
   const [users, setUsers] = React.useState<any[]>([]);
   const [usernameFilter, setUsernameFilter] = React.useState<string>("");
-  const { data: appUser, loading: appUserLoading } = useAppUserQuery({
+  const { data: appUser } = useAppUserQuery({
     fetchPolicy: "network-only",
   });
 
-  const { data: _users, loading: allUsersLoading } = useAllUsersQuery({
+  const { data: _users } = useAllUsersQuery({
     fetchPolicy: "network-only",
   });
 
@@ -40,7 +39,7 @@ const Home: React.FC = () => {
         u_.username.toLowerCase().includes(usernameFilter.toLowerCase())
       );
     setUsers(filtered as any);
-  }, [_users, usernameFilter, data?.user.user?.uid]);
+  }, [_users, usernameFilter, data]);
 
   if (!(data as any)?.user?.user) {
     return (

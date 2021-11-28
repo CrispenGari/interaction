@@ -4,7 +4,15 @@
   display: grid;
   place-items: center;
 }
-.register > form {
+
+.register__app {
+  display: flex;
+  width: 100%;
+  margin: 0px auto;
+  max-width: 1000px;
+  padding: 20px;
+}
+.register__app > form {
   width: 100%;
   height: 100%;
   margin: auto;
@@ -16,7 +24,7 @@
   align-items: center;
 }
 
-.register > form > h1 {
+.register__app > form > h1 {
   font-size: 0.95rem;
   font-weight: 500;
   user-select: none;
@@ -28,7 +36,7 @@
   background-clip: text;
   color: transparent;
 }
-.register > form > button {
+.register__app > form > button {
   width: 90%;
   border-radius: 999px;
   margin: 20px 0;
@@ -37,8 +45,34 @@
   padding: 10px;
   cursor: pointer;
   transition: all 1s ease;
+  max-width: 300px;
 }
-.register > form > button:hover {
+.register__app > form > button:hover {
   background: black;
   color: white;
+}
+
+.register__error {
+  color: red;
+  font-size: 0.8rem;
+}
+.register__app > form > input,
+.register__app > form > select {
+  width: 100%;
+  padding: 5px 10px;
+  margin: 10px;
+  outline: none;
+  border: 0.5px solid lightblue;
+  border-radius: 10px;
+  max-width: 300px;
+}
+
+.register__app > form > a {
+  text-decoration: none;
+  color: cornflowerblue !important;
+}
+@media only screen and (max-width: 600px) {
+  .register__app {
+    flex-direction: column !important;
+  }
 }
